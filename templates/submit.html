@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+
+{% block title %} Usuń {% endblock %}
+
+{% block content %}
+    <h1>Na pewno chcesz usunąć pojazd?</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Usuń pojazd</button>
+    </form>
+    <a href="{% url 'cars' %}" class="btn btn-primary">Cofnij</a>
+{% endblock %}

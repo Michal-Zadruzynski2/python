@@ -1,0 +1,49 @@
+{% extends 'main.html' %}
+
+{% block title %} Car list {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-10">
+            <h2><img src="/media/auto_import.jpg" class="banner"></h2>
+        </div>
+        <div class="col-2">
+            {% if user.is_authenticated %}
+                <h5>Witaj {{ user.username }} <span class="badge badge-light"><a href="{% url 'logout' %}">Logout</a></span></h5>
+                {% if request.user.is_superuser %}
+                    <a href="{% url 'new_car' %}"><button type="button" class="btn btn-primary">Dodaj nowy samochód</button></a>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'login' %}"><button type="button" class="btn btn-primary">Login</button></a>
+            {% endif %}
+        </div>
+
+    {% for car in cars %}
+            <div class="card" style="width: 60rem;">
+              <div class="card-body">
+                  <img src="/media/{{car.photo}}" class="car-photo">
+                  <div class="row">
+                      <div class="col-7">
+                        <h5 class="card-title">{{ car }}</h5>
+                      </div>
+                      <div class="col-5">
+                          {% if request.user.is_superuser %}
+                            <a href="{% url 'edit_car' car.id %}"><i class="fas fa-2x fa-edit"></i></a>
+                            <a href="{% url 'delete_car' car.id %}"><i class="fas fa-2x fa-trash"></i></a>
+                          {% endif %}
+                          <a href="{% url 'car_offer' car.id %}"><button type="button" class="btn btn-primary">Więcej informacji</button></a>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <p class="card-text">Pojemność skokowa: {{ car.engine }} cm3</p>
+                      <p class="card-text">Rodzaj paliwa: {{ car.fuel }}</p>
+                      <p class="card-text">Moc: {{ car.power }} KM</p>
+                      <p class="card-text">Rok produkcji: {{ car.year }}</p>
+                      <p class="card-text">Skrzynia biegów: {{ car.gearbox }}</p>
+                      <p class="card-text">Przebieg: {{ car.mileage }} km</p>
+                  </div>
+              </div>
+            </div>
+    {% endfor %}
+
+{% endblock %}
